@@ -10,11 +10,15 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      IMAGE: registry.${{ secrets.ACR_REGION }}.aliyuncs.com/${{ secrets.ACR_NAMESPACE }}/${{ secrets.ACR_REPO }}:${{ github.run_number }}-${{ steps.short-sha.outputs.sha }}
+      IMAGE: ${{ steps.docker-image.outputs.image }}
 
     steps:
       - id: short-sha
         uses: benjlevesque/short-sha@v1.2
+      - id: docker-image
+        run: |
+          IMAGE=registry.${{ secrets.ACR_REGION }}.aliyuncs.com/${{ secrets.ACR_NAMESPACE }}/${{ secrets.ACR_REPO }}:${{ github.run_number }}-${{ steps.short-sha.outputs.sha }}
+          echo "::set-output name=image::$IMAGE"
 
   build:
     runs-on: ubuntu-latest
