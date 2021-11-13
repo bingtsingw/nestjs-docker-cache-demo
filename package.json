@@ -21,6 +21,7 @@
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
+    "axios": "^0.24.0",
     "express": "^4.17.1",
     "joi": "^17.4.2",
     "lodash": "^4.17.21",
