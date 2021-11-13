@@ -22,7 +22,7 @@ COPY . .
 RUN pnpm build
 
 # --------------> The base image
-FROM bingtsingw/node-alpine:16-slim
+FROM bingtsingw/node-alpine:16-slim AS base
 
 RUN apk add --no-cache tini
 
@@ -32,3 +32,23 @@ WORKDIR /usr/src/app
 
 COPY --chown=node:node --from=installer /app/node_modules node_modules
 COPY --chown=node:node --from=builder /app/dist dist
+
+# --------------> The development image
+FROM base AS development
+
+USER node
+ENV NODE_ENV development
+
+WORKDIR /usr/src/app
+
+CMD ["/sbin/tini", "node", "dist/main"]
+
+# --------------> The production image
+FROM base AS production
+
+USER node
+ENV NODE_ENV production
+
+WORKDIR /usr/src/app
+
+CMD ["/sbin/tini", "node", "dist/main"]
