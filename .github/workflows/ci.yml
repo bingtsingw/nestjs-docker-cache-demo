@@ -16,7 +16,7 @@ jobs:
 
       - run: echo "IMAGE=registry.${{ secrets.ACR_REGION }}.aliyuncs.com/${{ secrets.ACR_NAMESPACE }}/${{ secrets.ACR_REPO }}:${{ github.run_number }}-${{ steps.short-sha.outputs.sha }}" >> $GITHUB_ENV
       - run: echo "IMAGE_DEV=${{ env.IMAGE }}-dev" >> $GITHUB_ENV
-      - run: echo "IMAGE_DEV=${{ env.IMAGE }}-prod" >> $GITHUB_ENV
+      - run: echo "IMAGE_PROD=${{ env.IMAGE }}-prod" >> $GITHUB_ENV
 
       - uses: actions/checkout@v2.4.0
 
@@ -46,7 +46,7 @@ jobs:
         with:
           context: .
           push: true
-          target: production
           tags: ${{ env.IMAGE_PROD }}
+          target: production
           cache-from: type=gha
           cache-to: type=gha,mode=max
